@@ -1,48 +1,14 @@
-class GameBoard
-  def initialize(positions)
-    @positions = positions
-  end
-  
-  def display 
-    puts "
-    #{@positions[0][0]} | #{@positions[0][1]} | #{@positions[0][2]}
-    __|___|____
-    #{@positions[1][0]} | #{@positions[1][1]} | #{@positions[1][2]}
-    __|___|____
-    #{@positions[2][0]} | #{@positions[2][1]} | #{@positions[2][2]}
-      |   | 
-    "
-  end
-  def update(input, player)
-    row = (input - 1) / 3
-    col = (input - 1) % 3
-    @positions[row][col] = player
-  end
-end
-
-class Dialogue
-  def hello
-    puts "Let's play Tic Tac Toe!"
-  end
-  def prompt_to_select_position(current_player)
-    puts "Player #{current_player}, please select a position"
-  end
-  def try_again
-    puts "Please select an available number"
-  end
-  def winner_message(last_player)
-    puts "Congratulations player #{last_player}, you won!"
-  end
-end
+require_relative 'lib/gameboard' # rubocop:disable Style/FrozenStringLiteralComment
+require_relative 'lib/dialogue'
 
 ###############################################
 
-def gameplay()
-  positions = [[1,2,3],[4,5,6],[7,8,9]]
-  last_player = "X"
-  current_player = "O"
+def gameplay
+  positions = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+  last_player = 'X'
+  current_player = 'O'
   win = false
-  
+
   talking = Dialogue.new
   talking.hello
 
@@ -61,9 +27,7 @@ def gameplay()
       talking.try_again
     end
 
-    if check_win(positions)
-      win = true
-    end
+    win = true if check_win(positions)
   end
 
   talking.winner_message(last_player)
@@ -78,10 +42,9 @@ def check_win(positions)
 
   winning_combinations = [
     positions[0], positions[1], positions[2],
-    vert_one, vert_two, vert_three,
-    diag_one, diag_two
+    vert_one, vert_two, vert_three, diag_one, diag_two
   ]
   winning_combinations.any? { |combination| combination.uniq.size == 1 && combination.first.is_a?(String) }
 end
 
-gameplay()
+gameplay

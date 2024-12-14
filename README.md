@@ -3,3 +3,11 @@ Build a tic-tac-toe game on the command line where two human players can play ag
 
 1. Think about how you would set up the different elements within the game… What should be a class? Instance variable? Method? A few minutes of thought can save you from wasting an hour of coding.
 2. Build your game, taking care to not share information between classes any more than you have to.
+
+
+Implement classes:
+- class GameBoard
+- class InputOutput
+- class GamePlay
+
+###########

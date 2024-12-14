@@ -1,52 +1,68 @@
+class GameBoard
+  def initialize(positions)
+    @positions = positions
+  end
+  
+  def display 
+    puts "
+    #{@positions[0][0]} | #{@positions[0][1]} | #{@positions[0][2]}
+    __|___|____
+    #{@positions[1][0]} | #{@positions[1][1]} | #{@positions[1][2]}
+    __|___|____
+    #{@positions[2][0]} | #{@positions[2][1]} | #{@positions[2][2]}
+      |   | 
+    "
+  end
+  def update(input, player)
+    row = (input - 1) / 3
+    col = (input - 1) % 3
+    @positions[row][col] = player
+  end
+end
+
+###############################################
+
+class Dialogue
+  def hello
+    puts "Let's play Tic Tac Toe!"
+  end
+  def prompt_to_select_position(current_player)
+    puts "Player #{current_player}, please select a position"
+  end
+  def try_again
+    puts "Please select an available number"
+  end
+  def winner_message(last_player)
+    puts "Congratulations player #{last_player}, you won!"
+  end
+end
+
+###############################################
+
 def gameplay()
   positions = [[1,2,3],[4,5,6],[7,8,9]]
   last_player = "X"
   current_player = "O"
   win = false
   
-  puts "Let's play Tic Tac Toe!"
+  talking = Dialogue.new
+  talking.hello
 
-  # Display board:
-  puts "
-  #{positions[0][0]} | #{positions[0][1]} | #{positions[0][2]}
-  __|___|____
-  #{positions[1][0]} | #{positions[1][1]} | #{positions[1][2]}
-  __|___|____
-  #{positions[2][0]} | #{positions[2][1]} | #{positions[2][2]}
-    |   | 
-  "
+  game_board = GameBoard.new(positions)
+  game_board.display
 
   until win == true
     # Get input:
-    puts "Player #{current_player}, please select a position"
+    talking.prompt_to_select_position(current_player)
     input = gets.chomp.to_i
-    row = (input - 1) / 3
-    col = (input - 1) % 3
 
     if positions.flatten.include?(input) && input.integer?
-      positions[row][col] = current_player
-
-      case last_player
-      when "X"
-        last_player = "O"
-        current_player = "X"
-      when "O"
-        last_player = "X"
-        current_player = "O"
-      end
+      game_board.update(input, current_player)
+      game_board.display
+      last_player, current_player = current_player, last_player
     else
-      puts "Please select an available number"
+      talking.try_again
     end
-
-    # Update board:
-    puts "
-    #{positions[0][0]} | #{positions[0][1]} | #{positions[0][2]}
-    __|___|____
-    #{positions[1][0]} | #{positions[1][1]} | #{positions[1][2]}
-    __|___|____
-    #{positions[2][0]} | #{positions[2][1]} | #{positions[2][2]}
-      |   | 
-    "
     
     #Check if win:
     diag_one = [positions[0][0], positions[1][1], positions[2][2]]
@@ -66,15 +82,9 @@ def gameplay()
         vert_three.all? { |item| item == "X" || item == "O" }
       win = true
     end
-    #Debugging
-    puts "Win?: #{win}"
-    puts "Diag_one: #{diag_one}"
-    puts "Diag_two: #{diag_two}"
   end
 
-  puts "Congratulations player #{last_player}, you won!"
-
+  talking.winner_message(last_player)
 end
 
 gameplay()
-

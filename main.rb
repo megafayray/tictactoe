@@ -20,8 +20,6 @@ class GameBoard
   end
 end
 
-###############################################
-
 class Dialogue
   def hello
     puts "Let's play Tic Tac Toe!"
@@ -52,7 +50,6 @@ def gameplay()
   game_board.display
 
   until win == true
-    # Get input:
     talking.prompt_to_select_position(current_player)
     input = gets.chomp.to_i
 
@@ -63,28 +60,28 @@ def gameplay()
     else
       talking.try_again
     end
-    
-    #Check if win:
-    diag_one = [positions[0][0], positions[1][1], positions[2][2]]
-    diag_two = [positions[0][2], positions[1][1], positions[2][0]]
-    vert_one = [positions[0][0], positions[1][0], positions[2][0]]
-    vert_two = [positions[0][1], positions[1][1], positions[2][1]]
-    vert_three = [positions[0][2], positions[1][2], positions[2][2]]
 
-
-    if positions[0].all? { |item| item == "X" || item == "O" } ||
-        positions[1].all? { |item| item == "X" || item == "O" } ||
-        positions[2].all? { |item| item == "X" || item == "O" } ||
-        diag_one.all? { |item| item == "X" || item == "O" } ||
-        diag_two.all? { |item| item == "X" || item == "O" } ||
-        vert_one.all? { |item| item == "X" || item == "O" } ||
-        vert_two.all? { |item| item == "X" || item == "O" } ||
-        vert_three.all? { |item| item == "X" || item == "O" }
+    if check_win(positions)
       win = true
     end
   end
 
   talking.winner_message(last_player)
+end
+
+def check_win(positions)
+  diag_one = [positions[0][0], positions[1][1], positions[2][2]]
+  diag_two = [positions[0][2], positions[1][1], positions[2][0]]
+  vert_one = [positions[0][0], positions[1][0], positions[2][0]]
+  vert_two = [positions[0][1], positions[1][1], positions[2][1]]
+  vert_three = [positions[0][2], positions[1][2], positions[2][2]]
+
+  winning_combinations = [
+    positions[0], positions[1], positions[2],
+    vert_one, vert_two, vert_three,
+    diag_one, diag_two
+  ]
+  winning_combinations.any? { |combination| combination.uniq.size == 1 && combination.first.is_a?(String) }
 end
 
 gameplay()

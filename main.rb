@@ -2,4 +2,5 @@ require_relative 'lib/gameboard' # rubocop:disable Style/FrozenStringLiteralComm
 require_relative 'lib/dialogue'
 require_relative 'lib/gameplay'
 
-GamePlay.new.play
+#commented out for testing purposes:
+# GamePlay.new.play
